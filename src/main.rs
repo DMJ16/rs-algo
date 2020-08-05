@@ -1,14 +1,13 @@
 mod linked_list;
 
-use linked_list::List;
+use linked_list::{doubly, singly};
 
 fn main() {
-    let mut list = List::new();
+    let mut list = doubly::LinkedList::new();
 
-    list = list.prepend(10);
-    list = list.prepend(10);
-    list = list.prepend(10);
-
-    println!("linked list has length of {}", list.len());
-    println!("{}", list.stringify());
+    list.append(String::from("David"));
+    list.append(String::from("David"));
+    list.append(String::from("David"));
+    list.pop();
+    println!("{:?}", list);
 }
