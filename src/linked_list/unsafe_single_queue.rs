@@ -1,4 +1,4 @@
-use std::{mem, ptr};
+use std::ptr;
 
 #[derive(Debug)]
 pub struct List<T> {
