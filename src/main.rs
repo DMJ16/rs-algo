@@ -1,3 +1,4 @@
-mod linked_list;
+mod algorithms;
+mod data_struct;
 
 fn main() {}
