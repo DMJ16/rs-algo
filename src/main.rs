@@ -1,4 +1,4 @@
 mod algorithms;
-mod data_struct;
+mod collections;
 
 fn main() {}
