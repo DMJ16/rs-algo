@@ -1,6 +1,9 @@
 pub mod binary_search;
+pub mod bubble_sort;
 pub mod factorial;
 pub mod fib;
+pub mod heap_sort;
 pub mod kmp;
 pub mod merge_sort;
 pub mod quick_sort;
+pub mod shell_sort;

@@ -1,4 +1,4 @@
-pub fn kmp(str: &str, substr: &str) -> usize {
+pub fn kmp(str: &str, substr: &str) -> u32 {
     let mut count = 0;
     let mut i = 0;
     let mut j = substr.len();

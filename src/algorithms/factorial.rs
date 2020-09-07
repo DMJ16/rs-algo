@@ -1,8 +1,8 @@
-pub fn factorial_iter(num: usize) -> usize {
+pub fn factorial_iter(num: u32) -> u32 {
     (1..=num).product()
 }
 
-pub fn factorial_recur(num: usize) -> usize {
+pub fn factorial_recur(num: u32) -> u32 {
     match num {
         0 | 1 => 1,
         _ => num * factorial_recur(num - 1),

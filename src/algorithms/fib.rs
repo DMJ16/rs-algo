@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-pub fn fib_iterative(n: usize) -> usize {
+pub fn fib_iterative(n: u32) -> u32 {
     let mut memo = (0, 1);
     match n {
         0 | 1 => n,
@@ -13,7 +13,7 @@ pub fn fib_iterative(n: usize) -> usize {
     }
 }
 
-pub fn fib_recursive(n: usize, memo: &mut HashMap<usize, usize>) -> usize {
+pub fn fib_recursive(n: u32, memo: &mut HashMap<u32, u32>) -> u32 {
     match memo.get(&n).copied() {
         Some(result) => result,
         None => {
@@ -42,7 +42,7 @@ mod test {
     }
     #[test]
     fn get_nth_fibonacci_recursive_memo() {
-        let mut hashmap: HashMap<usize, usize> = HashMap::new();
+        let mut hashmap = HashMap::new();
         assert_eq!(fib_recursive(0, &mut hashmap), 0);
         assert_eq!(fib_recursive(1, &mut hashmap), 1);
         assert_eq!(fib_recursive(2, &mut hashmap), 1);

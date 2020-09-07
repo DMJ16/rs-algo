@@ -1,4 +1,4 @@
-pub fn binary_search(arr: &[isize], targ: isize) -> Option<usize> {
+pub fn binary_search<T: PartialOrd>(arr: &[T], targ: T) -> Option<usize> {
     let mut start = 0;
     let mut end = arr.len() - 1;
     let mut mid = (start + end) / 2;
@@ -12,9 +12,10 @@ pub fn binary_search(arr: &[isize], targ: isize) -> Option<usize> {
         mid = (start + end) / 2;
     }
 
-    match arr[mid] == targ {
-        true => Some(mid),
-        false => None,
+    if arr[mid] == targ {
+        Some(mid)
+    } else {
+        None
     }
 }
 

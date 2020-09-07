@@ -16,7 +16,7 @@ struct Node<T> {
     right: Child<T>,
 }
 
-impl<T: Ord> BST<T> {
+impl<T: Ord + Copy> BST<T> {
     pub fn new() -> Self {
         BST { root: None }
     }
@@ -36,7 +36,7 @@ impl<T: Ord> BST<T> {
         }
     }
 
-    pub fn dfs_in_order(&self) -> Vec<&T> {
+    pub fn dfs_in_order(&self) -> Vec<T> {
         let mut result = Vec::new();
         if let Some(ref root) = self.root {
             root.dfs_in_order(&mut result);
@@ -44,7 +44,7 @@ impl<T: Ord> BST<T> {
         result
     }
 
-    pub fn dfs_pre_order(&self) -> Vec<&T> {
+    pub fn dfs_pre_order(&self) -> Vec<T> {
         let mut result = Vec::new();
         if let Some(ref root) = self.root {
             root.dfs_pre_order(&mut result);
@@ -52,7 +52,7 @@ impl<T: Ord> BST<T> {
         result
     }
 
-    pub fn dfs_post_order(&self) -> Vec<&T> {
+    pub fn dfs_post_order(&self) -> Vec<T> {
         let mut result = Vec::new();
         if let Some(ref root) = self.root {
             root.dfs_post_order(&mut result);
@@ -60,7 +60,7 @@ impl<T: Ord> BST<T> {
         result
     }
 
-    pub fn bfs(&self) -> Vec<&T> {
+    pub fn bfs(&self) -> Vec<T> {
         let mut result = Vec::new();
         if let Some(ref root) = self.root {
             root.bfs(&mut result);
@@ -73,13 +73,13 @@ trait TreeNode<T> {
     fn new(val: T) -> Option<Box<Node<T>>>;
     fn insert(&mut self, val: T);
     fn search(&self, val: T) -> bool;
-    fn dfs_in_order<'a>(&'a self, result: &mut Vec<&'a T>);
-    fn dfs_pre_order<'a>(&'a self, result: &mut Vec<&'a T>);
-    fn dfs_post_order<'a>(&'a self, result: &mut Vec<&'a T>);
-    fn bfs<'a>(&'a self, result: &mut Vec<&'a T>);
+    fn dfs_in_order(&self, result: &mut Vec<T>);
+    fn dfs_pre_order(&self, result: &mut Vec<T>);
+    fn dfs_post_order(&self, result: &mut Vec<T>);
+    fn bfs(&self, result: &mut Vec<T>);
 }
 
-impl<T: Ord> TreeNode<T> for Node<T> {
+impl<T: Ord + Copy> TreeNode<T> for Node<T> {
     fn new(val: T) -> Option<Box<Node<T>>> {
         Some(Box::new(Node {
             val,
@@ -124,18 +124,18 @@ impl<T: Ord> TreeNode<T> for Node<T> {
             }
         }
     }
-    fn dfs_in_order<'a>(&'a self, result: &mut Vec<&'a T>) {
+    fn dfs_in_order(&self, result: &mut Vec<T>) {
         if let Some(ref left) = self.left {
             left.dfs_in_order(result);
         }
-        result.push(&self.val);
+        result.push(self.val);
         if let Some(ref right) = self.right {
             right.dfs_in_order(result);
         }
     }
 
-    fn dfs_pre_order<'a>(&'a self, result: &mut Vec<&'a T>) {
-        result.push(&self.val);
+    fn dfs_pre_order(&self, result: &mut Vec<T>) {
+        result.push(self.val);
         if let Some(ref left) = self.left {
             left.dfs_pre_order(result);
         }
@@ -144,24 +144,24 @@ impl<T: Ord> TreeNode<T> for Node<T> {
         }
     }
 
-    fn dfs_post_order<'a>(&'a self, result: &mut Vec<&'a T>) {
+    fn dfs_post_order(&self, result: &mut Vec<T>) {
         if let Some(ref left) = self.left {
             left.dfs_post_order(result);
         }
         if let Some(ref right) = self.right {
             right.dfs_post_order(result);
         }
-        result.push(&self.val);
+        result.push(self.val);
     }
 
-    fn bfs<'a>(&'a self, result: &mut Vec<&'a T>) {
+    fn bfs(&self, result: &mut Vec<T>) {
         let mut queue: VecDeque<&Node<T>> = VecDeque::new();
         let mut current_node = self;
         queue.push_back(current_node);
         while !queue.is_empty() {
             if let Some(node) = queue.pop_front() {
                 current_node = node;
-                result.push(&current_node.val);
+                result.push(current_node.val);
                 if let Some(ref left) = current_node.left {
                     queue.push_back(left);
                 }
@@ -210,11 +210,12 @@ mod test {
         let pre_order_data = vec![100, 1, 20, 5, 600, 300];
         let post_order_data = vec![5, 20, 1, 300, 600, 100];
         let bfs_data = vec![100, 1, 600, 20, 300, 5];
+        println!("{:#?}", tree);
         for i in 0..in_order_data.len() {
-            assert_eq!(tree.dfs_in_order()[i], &in_order_data[i]);
-            assert_eq!(tree.dfs_pre_order()[i], &pre_order_data[i]);
-            assert_eq!(tree.dfs_post_order()[i], &post_order_data[i]);
-            assert_eq!(tree.bfs()[i], &bfs_data[i]);
+            assert_eq!(tree.dfs_in_order()[i], in_order_data[i]);
+            assert_eq!(tree.dfs_pre_order()[i], pre_order_data[i]);
+            assert_eq!(tree.dfs_post_order()[i], post_order_data[i]);
+            assert_eq!(tree.bfs()[i], bfs_data[i]);
         }
     }
 }
