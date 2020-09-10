@@ -1,22 +1,25 @@
 use std::cmp::Ordering;
 use std::collections::VecDeque;
-use std::fmt::Debug;
+use std::convert::Into;
 
 type Child<T> = Option<Box<Node<T>>>;
 
 #[derive(Debug)]
-pub struct BST<T> {
+pub struct BST<T: Copy> {
     root: Child<T>,
 }
 
 #[derive(Debug)]
-struct Node<T> {
+struct Node<T: Copy> {
     val: T,
     left: Child<T>,
     right: Child<T>,
 }
 
-impl<T: Ord + Copy> BST<T> {
+impl<T> BST<T>
+where
+    T: Ord + Copy + Into<i64>,
+{
     pub fn new() -> Self {
         BST { root: None }
     }
@@ -67,9 +70,16 @@ impl<T: Ord + Copy> BST<T> {
         }
         result
     }
+
+    pub fn validate(&self) -> bool {
+        self.root
+            .as_ref()
+            .expect("root is undefined")
+            .validate(std::i64::MIN, std::i64::MAX)
+    }
 }
 
-trait TreeNode<T> {
+trait TreeNode<T: Copy> {
     fn new(val: T) -> Option<Box<Node<T>>>;
     fn insert(&mut self, val: T);
     fn search(&self, val: T) -> bool;
@@ -77,9 +87,13 @@ trait TreeNode<T> {
     fn dfs_pre_order(&self, result: &mut Vec<T>);
     fn dfs_post_order(&self, result: &mut Vec<T>);
     fn bfs(&self, result: &mut Vec<T>);
+    fn validate(&self, min: i64, max: i64) -> bool;
 }
 
-impl<T: Ord + Copy> TreeNode<T> for Node<T> {
+impl<T> TreeNode<T> for Node<T>
+where
+    T: Ord + Copy + Into<i64>,
+{
     fn new(val: T) -> Option<Box<Node<T>>> {
         Some(Box::new(Node {
             val,
@@ -171,6 +185,21 @@ impl<T: Ord + Copy> TreeNode<T> for Node<T> {
             }
         }
     }
+
+    fn validate(&self, min: i64, max: i64) -> bool {
+        if self.val.into() <= min || self.val.into() >= max {
+            return false;
+        }
+        let left_is_valid = match &self.left {
+            Some(left) => left.validate(min, self.val.into()),
+            None => true,
+        };
+        left_is_valid
+            && match &self.right {
+                Some(right) => right.validate(self.val.into(), max),
+                None => true,
+            }
+    }
 }
 
 #[cfg(test)]
@@ -179,7 +208,7 @@ mod test {
 
     #[test]
     fn insert_and_find_node() {
-        let mut tree: BST<usize> = BST::new();
+        let mut tree = BST::new();
         tree.insert(100);
         tree.insert(1);
         tree.insert(600);
@@ -198,7 +227,7 @@ mod test {
 
     #[test]
     fn dfs() {
-        let mut tree: BST<usize> = BST::new();
+        let mut tree = BST::new();
         tree.insert(100);
         tree.insert(1);
         tree.insert(600);
@@ -217,5 +246,18 @@ mod test {
             assert_eq!(tree.dfs_post_order()[i], post_order_data[i]);
             assert_eq!(tree.bfs()[i], bfs_data[i]);
         }
+    }
+
+    #[test]
+    fn validate() {
+        let mut tree = BST::new();
+        tree.insert(100);
+        tree.insert(1);
+        tree.insert(600);
+        tree.insert(300);
+        tree.insert(20);
+        tree.insert(5);
+
+        assert_eq!(tree.validate(), true);
     }
 }
