@@ -1,6 +1,9 @@
 use std::collections::HashMap;
 
 pub fn fib_exp(n: u32) -> u32 {
+    if n == 0 {
+        return n;
+    }
     let sqrt_5 = 5.0f64.sqrt();
     let phi = (1.0 + sqrt_5) / 2.0;
     let q = 1.0 / phi;
@@ -34,12 +37,28 @@ pub fn fib_recur(n: u32, memo: &mut HashMap<u32, u32>) -> u32 {
     }
 }
 
+pub fn fib_even_sum(max: u32) -> u32 {
+    let mut a = 1;
+    let mut b = 2;
+    let mut sum = 0;
+    while a < max {
+        if a % 2 == 0 {
+            sum += a;
+        }
+        let c = a + b;
+        a = b;
+        b = c;
+    }
+    sum
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
 
     #[test]
     fn get_nth_fibonacci_expotential() {
+        assert_eq!(fib_exp(0), 0);
         assert_eq!(fib_exp(1), 1);
         assert_eq!(fib_exp(2), 1);
         assert_eq!(fib_exp(3), 2);
@@ -65,5 +84,11 @@ mod test {
         assert_eq!(fib_recur(3, &mut hashmap), 2);
         assert_eq!(fib_recur(4, &mut hashmap), 3);
         assert_eq!(fib_recur(5, &mut hashmap), 5);
+    }
+
+    #[test]
+    fn get_fib_even_sum_to_n() {
+        println!("{}", fib_even_sum(4000000));
+        assert_eq!(fib_even_sum(4e6 as u32), 4613732);
     }
 }
