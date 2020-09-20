@@ -10,3 +10,5 @@ pub mod merge_sort;
 pub mod peasant_mult;
 pub mod quick_sort;
 pub mod shell_sort;
+pub mod sieve_of_e;
+pub mod topological_sort;

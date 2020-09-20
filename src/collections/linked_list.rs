@@ -75,17 +75,6 @@ impl<T> List<T> {
     }
 }
 
-// impl<T> Node<T> {
-//     fn new(value: String) -> Rc<RefCell<Node>> {
-//         Rc::new(RefCell::new(Node {
-//             value,
-//             next: None,
-//             prev: None,
-//         }))
-//     }
-// }
-
-//naive
 #[derive(Debug)]
 pub struct LinkedList<T: PartialEq>(Option<(T, Box<LinkedList<T>>)>);
 
