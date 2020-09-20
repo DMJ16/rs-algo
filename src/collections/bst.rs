@@ -239,7 +239,6 @@ mod test {
         let pre_order_data = vec![100, 1, 20, 5, 600, 300];
         let post_order_data = vec![5, 20, 1, 300, 600, 100];
         let bfs_data = vec![100, 1, 600, 20, 300, 5];
-        println!("{:#?}", tree);
         for i in 0..in_order_data.len() {
             assert_eq!(tree.dfs_in_order()[i], in_order_data[i]);
             assert_eq!(tree.dfs_pre_order()[i], pre_order_data[i]);

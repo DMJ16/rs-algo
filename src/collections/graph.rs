@@ -10,7 +10,7 @@ pub struct GraphErr {
     msg: String,
 }
 impl GraphErr {
-    pub fn new(msg: String) -> Self {
+    pub fn new(msg: &str) -> Self {
         GraphErr {
             msg: msg.to_string(),
         }
@@ -54,11 +54,6 @@ where
 #[derive(Debug)]
 pub struct Graph<T: Copy> {
     adj_list: HashMap<T, Vec<Rc<RefCell<GraphNode<T>>>>>,
-}
-
-pub struct Closure<'s, T> {
-    data: T,
-    func: &'s dyn Fn(&Closure<T>, &T),
 }
 
 impl<T> Graph<T>

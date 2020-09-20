@@ -88,7 +88,6 @@ mod test {
 
     #[test]
     fn get_fib_even_sum_to_n() {
-        println!("{}", fib_even_sum(4000000));
         assert_eq!(fib_even_sum(4e6 as u32), 4613732);
     }
 }
