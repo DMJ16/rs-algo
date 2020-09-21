@@ -47,7 +47,7 @@ impl LinkedList {
                 self.tail.take();
             }
             self.length -= 1;
-            Rc::try_unwrap(head).ok().expect("Error").into_inner().value
+            Rc::try_unwrap(head).expect("Error").into_inner().value
         })
     }
 }

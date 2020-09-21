@@ -9,3 +9,9 @@ Algorithms, data structures, and general computer science problems in Rust.
 ### Tests 🧪
 
 Test suites use cargo.
+
+### WASI 🧩
+
+#### Mandelbrot
+
+![](https://media.giphy.com/media/94R74g9SryKy1pxeFj/giphy.gif)

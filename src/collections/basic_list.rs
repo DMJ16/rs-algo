@@ -60,7 +60,7 @@ impl<T> List<T> {
     }
     pub fn iter_mut(&mut self) -> IterMut<T> {
         IterMut {
-            next: self.head.as_mut().map(|node| &mut **node),
+            next: self.head.as_deref_mut().map(|node| &mut *node),
         }
     }
 }
@@ -96,7 +96,7 @@ impl<'a, T> Iterator for IterMut<'a, T> {
     type Item = &'a mut T;
     fn next(&mut self) -> Option<Self::Item> {
         self.next.take().map(|node| {
-            self.next = node.next.as_mut().map(|node| &mut **node);
+            self.next = node.next.as_deref_mut().map(|node| &mut *node);
             &mut node.elem
         })
     }
@@ -142,7 +142,9 @@ mod test {
 
         assert_eq!(list.peek(), Some(&3));
         assert_eq!(list.mut_peek(), Some(&mut 3));
-        list.mut_peek().map(|val| *val = 42);
+        if let Some(val) = list.mut_peek() {
+            *val = 42;
+        }
 
         assert_eq!(list.peek(), Some(&42));
         assert_eq!(list.pop(), Some(42))

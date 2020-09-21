@@ -4,6 +4,7 @@ use std::rc::Rc;
 pub struct List<T> {
     head: Link<T>,
     tail: Link<T>,
+    length: u32,
 }
 
 type Link<T> = Option<Rc<RefCell<Node<T>>>>;
@@ -31,6 +32,7 @@ impl<T> List<T> {
         List {
             head: None,
             tail: None,
+            length: 0,
         }
     }
 
@@ -40,13 +42,13 @@ impl<T> List<T> {
             Some(old_head) => {
                 old_head.borrow_mut().prev = Some(new_node.clone());
                 new_node.borrow_mut().next = Some(old_head);
-                self.head = Some(new_node);
             }
             None => {
                 self.tail = Some(new_node.clone());
-                self.head = Some(new_node);
             }
         }
+        self.length += 1;
+        self.head = Some(new_node);
     }
 
     pub fn shift(&mut self) -> Option<T> {
@@ -60,6 +62,7 @@ impl<T> List<T> {
                     self.tail.take();
                 }
             }
+            self.length -= 1;
             Rc::try_unwrap(old_head).ok().unwrap().into_inner().elem
         })
     }
@@ -70,13 +73,13 @@ impl<T> List<T> {
             Some(old_tail) => {
                 old_tail.borrow_mut().next = Some(new_node.clone());
                 new_node.borrow_mut().prev = Some(old_tail);
-                self.tail = Some(new_node);
             }
             None => {
                 self.head = Some(new_node.clone());
-                self.tail = Some(new_node);
             }
         }
+        self.length += 1;
+        self.tail = Some(new_node);
     }
 
     pub fn pop(&mut self) -> Option<T> {
@@ -90,6 +93,7 @@ impl<T> List<T> {
                     self.head.take();
                 }
             }
+            self.length -= 1;
             Rc::try_unwrap(old_tail).ok().unwrap().into_inner().elem
         })
     }

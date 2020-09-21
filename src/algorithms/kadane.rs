@@ -4,9 +4,8 @@ pub fn kadane(vec: Vec<i32>) -> i32 {
     let mut max_at_idx = vec[0];
     let mut current_max = vec[0];
 
-    for i in 1..vec.len() {
-        let num = vec[i];
-        max_at_idx = max(num, max_at_idx + num);
+    for num in &vec[1..] {
+        max_at_idx = max(*num, max_at_idx + num);
         current_max = max(current_max, max_at_idx);
     }
 

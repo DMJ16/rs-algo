@@ -12,7 +12,7 @@ struct Node<T> {
 }
 
 #[derive(Debug)]
-struct List<T> {
+pub struct List<T> {
     head: StrongLink<T>,
     tail: WeakLink<T>,
 }

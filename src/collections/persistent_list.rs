@@ -43,7 +43,7 @@ impl<T> List<T> {
 
     pub fn iter(&self) -> Iter<T> {
         Iter {
-            next: self.head.as_ref().map(|node| &**node),
+            next: self.head.as_deref().map(|node| &*node),
         }
     }
 }
@@ -53,7 +53,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.next.map(|node| {
-            self.next = node.next.as_ref().map(|node| &**node);
+            self.next = node.next.as_deref().map(|node| &*node);
             &node.elem
         })
     }

@@ -113,7 +113,7 @@ where
 
     pub fn dfs_recur(&self, v: T) -> Vec<T> {
         let data = vec![];
-        let mut visited = HashMap::new();
+        let visited = HashMap::new();
 
         #[derive(Debug)]
         struct Env<'s, T> {
@@ -186,7 +186,7 @@ where
         let mut heap: BinaryHeap<Reverse<Rc<RefCell<GraphNode<T>>>>> = BinaryHeap::new();
         let mut prev: HashMap<T, Option<T>> = HashMap::new();
         let mut path: Vec<T> = vec![];
-        let mut nearest_vertex: Option<Reverse<Rc<RefCell<GraphNode<T>>>>> = None;
+        // let mut nearest_vertex: Option<Reverse<Rc<RefCell<GraphNode<T>>>>> = None;
         let mut current_vertex: T = start;
 
         self.adj_list.keys().for_each(|vertex| {
@@ -200,7 +200,7 @@ where
             prev.insert(*vertex, None);
         });
         while !heap.is_empty() {
-            nearest_vertex = heap.pop();
+            let nearest_vertex = heap.pop();
             let temp = nearest_vertex.clone();
             current_vertex = temp.unwrap().0.borrow().vertex;
             if current_vertex == end {
