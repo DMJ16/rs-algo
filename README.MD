@@ -1,16 +1,16 @@
-# rs-algo 🦀
+# 🦀 rs-algo
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/DMJ16/rs-algo/Rust?style=plastic)
 
-### Summary 📖
+### 📖 Summary
 
 Algorithms, data structures, and general computer science problems in Rust.
 
-### Tests 🧪
+### 🧪 Tests 
 
 Test suites use cargo.
 
-### WASI 🧩
+### 🧩 WASI
 
 #### Mandelbrot
 
